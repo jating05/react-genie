@@ -1,0 +1,27 @@
+/* src/components/ApplyGenieForm.css */
+
+/* Ensure the faded class applies opacity and disables pointer events */
+.faded {
+    opacity: var(--faded-opacity);
+    pointer-events: none;
+    transition: opacity var(--transition-duration);
+}
+
+/* Additional styles for personal details when faded in dark mode */
+.dark-mode #personalDetails.faded .form-control {
+    color: red;
+}
+
+.form-control {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-color);
+    transition: background-color var(--transition-duration), border-color var(--transition-duration), color var(--transition-duration);
+}
+
+.form-label {
+    color: var(--label-color);
+    transition: color var(--transition-duration);
+}
+
+/* Add any other component-specific styles here */
