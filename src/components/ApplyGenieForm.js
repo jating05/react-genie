@@ -10,7 +10,7 @@ function ApplyGenieForm() {
     cpc: '',
     haveSSN: '',
     ssn: '',
-    conditionFor: '',
+    conditionFor: 'Generic', // Default to 'Generic'
     personalDetails: {
       firstName: '',
       lastName: '',
@@ -114,14 +114,18 @@ function ApplyGenieForm() {
   };
 
   // Handle Condition For changes
-  const handleConditionForChange = (value) => {
+  const handleConditionForChange = (e) => {
+    const isChecked = e.target.checked;
+    const newCondition = isChecked ? 'Loans' : 'Generic';
+
     setFormData((prevData) => ({
       ...prevData,
-      conditionFor: value,
+      conditionFor: newCondition,
     }));
-    if (value === 'Loans') {
+
+    if (isChecked) {
       autopopulateLoans();
-    } else if (value === 'Generic') {
+    } else {
       autopopulateGeneric();
     }
   };
@@ -218,10 +222,7 @@ function ApplyGenieForm() {
       alert('CPC is mandatory.');
       return;
     }
-    if (!formData.conditionFor) {
-      alert('Condition For is mandatory.');
-      return;
-    }
+    // No need to check if conditionFor is selected since it defaults to 'Generic'
     if (!formData.haveSSN) {
       alert('Please select if you have a SSN.');
       return;
@@ -392,31 +393,18 @@ function ApplyGenieForm() {
 
       {/* Condition For Field */}
       <div className="mb-3 form-group">
-        <label className="form-label">Condition For <span className="text-danger">*</span></label>
+        <label className="form-label">Condition For</label>
         <div>
-          <div className="form-check form-check-inline">
+          <div className="form-check">
             <input
               className="form-check-input"
               type="checkbox"
               id="conditionLoans"
               name="conditionFor"
-              value="Loans"
               checked={formData.conditionFor === 'Loans'}
-              onChange={() => handleConditionForChange('Loans')}
+              onChange={handleConditionForChange}
             />
             <label className="form-check-label" htmlFor="conditionLoans">Loans</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="conditionGeneric"
-              name="conditionFor"
-              value="Generic"
-              checked={formData.conditionFor === 'Generic'}
-              onChange={() => handleConditionForChange('Generic')}
-            />
-            <label className="form-check-label" htmlFor="conditionGeneric">Generic</label>
           </div>
         </div>
       </div>
