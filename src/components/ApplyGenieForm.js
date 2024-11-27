@@ -274,137 +274,158 @@ function ApplyGenieForm() {
   };
 
   return (
-    <form id="applyGenieForm" className="card p-4 shadow-sm animate__animated animate__fadeInLeft" onSubmit={handleSubmit}>
-      {/* Environment Field */}
-      <div className="mb-3 form-group">
-        <label htmlFor="environment" className="form-label">Environment</label>
-        <select
-          className="form-select"
-          id="environment"
-          name="environment"
-          value={formData.environment}
-          onChange={handleChange}
-        >
-          <option value="Any">Any</option>
-          <option value="QA01">QA01</option>
-          <option value="QA02">QA02</option>
-        </select>
-      </div>
-
-      {/* Partner Field */}
-      <div className="mb-3 form-group">
-        <label htmlFor="partner" className="form-label">Partner</label>
-        <select
-          className="form-select"
-          id="partner"
-          name="partner"
-          value={formData.partner}
-          onChange={handleChange}
-        >
-          <option value="">-- Select Partner --</option>
-          {partners.map((partner) => (
-            <option key={partner} value={partner}>
-              {partner}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* CPC Field */}
-      <div className="mb-3 form-group">
-        <label htmlFor="cpc" className="form-label">CPC <span className="text-danger">*</span></label>
-        <select
-          className="form-select"
-          id="cpc"
-          name="cpc"
-          value={formData.cpc}
-          onChange={handleChange}
-          required
-        >
-          <option value="">-- Select CPC --</option>
-          {cpcs.map((cpc, index) => (
-            <option key={index} value={cpc}>
-              {cpc}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Have a SSN Field */}
-      <div className="mb-3 form-group">
-        <label className="form-label">Have a SSN</label>
-        <div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              id="haveSSNYes"
-              name="haveSSN"
-              value="Yes"
-              checked={formData.haveSSN === 'Yes'}
-              onChange={() => handleHaveSSNChange('Yes')}
-            />
-            <label className="form-check-label" htmlFor="haveSSNYes">Yes</label>
+    <form
+      id="applyGenieForm"
+      className="card p-4 shadow-sm animate__animated animate__fadeInLeft"
+      onSubmit={handleSubmit}
+    >
+      {/* Environment and Partner Fields */}
+      <div className="row">
+        <div className="col-md-6">
+          <div className="mb-3 form-group">
+            <label htmlFor="environment" className="form-label">Environment</label>
+            <select
+              className="form-select"
+              id="environment"
+              name="environment"
+              value={formData.environment}
+              onChange={handleChange}
+            >
+              <option value="Any">Any</option>
+              <option value="QA01">QA01</option>
+              <option value="QA02">QA02</option>
+            </select>
           </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              id="haveSSNNo"
-              name="haveSSN"
-              value="No"
-              checked={formData.haveSSN === 'No'}
-              onChange={() => handleHaveSSNChange('No')}
-            />
-            <label className="form-check-label" htmlFor="haveSSNNo">No</label>
+        </div>
+        <div className="col-md-6">
+          <div className="mb-3 form-group">
+            <label htmlFor="partner" className="form-label">Partner</label>
+            <select
+              className="form-select"
+              id="partner"
+              name="partner"
+              value={formData.partner}
+              onChange={handleChange}
+            >
+              <option value="">-- Select Partner --</option>
+              {partners.map((partner) => (
+                <option key={partner} value={partner}>
+                  {partner}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* CPC and Have a SSN Fields */}
+      <div className="row">
+        <div className="col-md-6">
+          {/* CPC Field */}
+          <div className="mb-3 form-group">
+            <label htmlFor="cpc" className="form-label">
+              CPC <span className="text-danger">*</span>
+            </label>
+            <select
+              className="form-select"
+              id="cpc"
+              name="cpc"
+              value={formData.cpc}
+              onChange={handleChange}
+              required
+            >
+              <option value="">-- Select CPC --</option>
+              {cpcs.map((cpc, index) => (
+                <option key={index} value={cpc}>
+                  {cpc}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="col-md-6">
+          {/* Have a SSN Field */}
+          <div className="mb-3 form-group">
+            <label className="form-label">Have a SSN</label>
+            <div>
+              <div className="form-check form-check-inline">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  id="haveSSNYes"
+                  name="haveSSN"
+                  value="Yes"
+                  checked={formData.haveSSN === 'Yes'}
+                  onChange={() => handleHaveSSNChange('Yes')}
+                />
+                <label className="form-check-label" htmlFor="haveSSNYes">Yes</label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  id="haveSSNNo"
+                  name="haveSSN"
+                  value="No"
+                  checked={formData.haveSSN === 'No'}
+                  onChange={() => handleHaveSSNChange('No')}
+                />
+                <label className="form-check-label" htmlFor="haveSSNNo">No</label>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* SSN Field */}
-      <div className="mb-3 form-group">
-        <label htmlFor="ssn" className="form-label">SSN</label>
-        <div className="input-group">
-          <span className="input-group-text" id="ssn-icon">
-            <i className="fas fa-id-card-alt"></i>
-          </span>
-          <input
-            type="number"
-            className="form-control"
-            id="ssn"
-            name="ssn"
-            placeholder="Enter SSN"
-            aria-label="SSN"
-            aria-describedby="ssn-icon"
-            value={formData.ssn}
-            onChange={handleChange}
-            required={formData.haveSSN === 'Yes'}
-          />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            id="autoGenerateSSN"
-            onClick={autoGenerateSSN}
-          >
-            <i className="fas fa-redo"></i> Autogenerate
-          </button>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="mb-3 form-group">
+            <label htmlFor="ssn" className="form-label">SSN</label>
+            <div className="input-group">
+              <span className="input-group-text" id="ssn-icon">
+                <i className="fas fa-id-card-alt"></i>
+              </span>
+              <input
+                type="number"
+                className="form-control"
+                id="ssn"
+                name="ssn"
+                placeholder="Enter SSN"
+                aria-label="SSN"
+                aria-describedby="ssn-icon"
+                value={formData.ssn}
+                onChange={handleChange}
+                required={formData.haveSSN === 'Yes'}
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                id="autoGenerateSSN"
+                onClick={autoGenerateSSN}
+              >
+                <i className="fas fa-redo"></i> Autogenerate
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Condition For Field */}
-      <div className="mb-3 form-group">
-        <label className="form-label">Condition For</label>
-        <div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="conditionLoans"
-              name="conditionFor"
-              checked={formData.conditionFor === 'Loans'}
-              onChange={handleConditionForChange}
-            />
-            <label className="form-check-label" htmlFor="conditionLoans">Loans</label>
+        <div className="col-md-6">
+          {/* Condition For Field */}
+          <div className="mb-3 form-group">
+            <label className="form-label">Condition For</label>
+            <div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="conditionLoans"
+                  name="conditionFor"
+                  checked={formData.conditionFor === 'Loans'}
+                  onChange={handleConditionForChange}
+                />
+                <label className="form-check-label" htmlFor="conditionLoans">Loans</label>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -426,100 +447,122 @@ function ApplyGenieForm() {
         id="personalDetails"
         className={`mb-3 form-group ${formData.conditionFor === 'Loans' ? 'faded' : ''}`}
       >
-        <div className="mb-3">
-          <label htmlFor="firstName" className="form-label">
-            First Name <span className="text-danger">*</span>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="firstName"
-            name="firstName"
-            value={formData.personalDetails.firstName}
-            onChange={handleChange}
-            required={formData.conditionFor !== 'Loans'}
-            disabled={formData.conditionFor === 'Loans'}
-          />
+        <div className="row">
+          <div className="col-md-6">
+            <div className="mb-3">
+              <label htmlFor="firstName" className="form-label">
+                First Name <span className="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="firstName"
+                name="firstName"
+                value={formData.personalDetails.firstName}
+                onChange={handleChange}
+                required={formData.conditionFor !== 'Loans'}
+                disabled={formData.conditionFor === 'Loans'}
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="mb-3">
+              <label htmlFor="lastName" className="form-label">
+                Last Name <span className="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="lastName"
+                name="lastName"
+                value={formData.personalDetails.lastName}
+                onChange={handleChange}
+                required={formData.conditionFor !== 'Loans'}
+                disabled={formData.conditionFor === 'Loans'}
+              />
+            </div>
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="lastName" className="form-label">
-            Last Name <span className="text-danger">*</span>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="lastName"
-            name="lastName"
-            value={formData.personalDetails.lastName}
-            onChange={handleChange}
-            required={formData.conditionFor !== 'Loans'}
-            disabled={formData.conditionFor === 'Loans'}
-          />
+        <div className="row">
+          <div className="col-md-6">
+            <div className="mb-3">
+              <label htmlFor="dob" className="form-label">DOB</label>
+              <input
+                type="date"
+                className="form-control"
+                id="dob"
+                name="dob"
+                value={formData.personalDetails.dob}
+                onChange={handleChange}
+                disabled={formData.conditionFor === 'Loans'}
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="mb-3">
+              <label htmlFor="address1" className="form-label">Address1</label>
+              <input
+                type="text"
+                className="form-control"
+                id="address1"
+                name="address1"
+                value={formData.personalDetails.address1}
+                onChange={handleChange}
+                disabled={formData.conditionFor === 'Loans'}
+              />
+            </div>
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="dob" className="form-label">DOB</label>
-          <input
-            type="date"
-            className="form-control"
-            id="dob"
-            name="dob"
-            value={formData.personalDetails.dob}
-            onChange={handleChange}
-            disabled={formData.conditionFor === 'Loans'}
-          />
+        <div className="row">
+          <div className="col-md-6">
+            <div className="mb-3">
+              <label htmlFor="address2" className="form-label">Address2</label>
+              <input
+                type="text"
+                className="form-control"
+                id="address2"
+                name="address2"
+                value={formData.personalDetails.address2}
+                onChange={handleChange}
+                disabled={formData.conditionFor === 'Loans'}
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="mb-3">
+              <label htmlFor="zipcode" className="form-label">Zipcode</label>
+              <input
+                type="text"
+                className="form-control"
+                id="zipcode"
+                name="zipcode"
+                value={formData.personalDetails.zipcode}
+                onChange={handleChange}
+                disabled={formData.conditionFor === 'Loans'}
+              />
+            </div>
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="address1" className="form-label">Address1</label>
-          <input
-            type="text"
-            className="form-control"
-            id="address1"
-            name="address1"
-            value={formData.personalDetails.address1}
-            onChange={handleChange}
-            disabled={formData.conditionFor === 'Loans'}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="address2" className="form-label">Address2</label>
-          <input
-            type="text"
-            className="form-control"
-            id="address2"
-            name="address2"
-            value={formData.personalDetails.address2}
-            onChange={handleChange}
-            disabled={formData.conditionFor === 'Loans'}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="zipcode" className="form-label">Zipcode</label>
-          <input
-            type="text"
-            className="form-control"
-            id="zipcode"
-            name="zipcode"
-            value={formData.personalDetails.zipcode}
-            onChange={handleChange}
-            disabled={formData.conditionFor === 'Loans'}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            name="email"
-            value={formData.personalDetails.email}
-            onChange={handleChange}
-            disabled={formData.conditionFor === 'Loans'}
-          />
+        <div className="row">
+          <div className="col-md-6">
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                name="email"
+                value={formData.personalDetails.email}
+                onChange={handleChange}
+                disabled={formData.conditionFor === 'Loans'}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Submit Buttons */}
-      <div className="mb-3 d-flex justify-content-between">
+      <div className="d-flex justify-content-between">
         <button type="submit" className="btn btn-success me-2" id="applyBtn">
           <i className="fas fa-check-circle"></i> Apply
         </button>
