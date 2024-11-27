@@ -264,7 +264,6 @@ function ApplyGenieForm() {
     });
   };
 
-  // Handle 'Apply and Register' button
   const handleApplyRegister = () => {
     // Trigger form submission
     handleSubmit(new Event('submit'));
@@ -279,10 +278,10 @@ function ApplyGenieForm() {
       className="card p-4 shadow-sm animate__animated animate__fadeInLeft"
       onSubmit={handleSubmit}
     >
-      {/* Environment and Partner Fields */}
-      <div className="row">
-        <div className="col-md-6">
-          <div className="mb-3 form-group">
+      {/* Environment Field */}
+      <div className="row mb-3">
+        <div className="col">
+          <div className="form-group">
             <label htmlFor="environment" className="form-label">Environment</label>
             <select
               className="form-select"
@@ -297,8 +296,12 @@ function ApplyGenieForm() {
             </select>
           </div>
         </div>
+      </div>
+
+      {/* Partner and CPC Fields */}
+      <div className="row mb-3">
         <div className="col-md-6">
-          <div className="mb-3 form-group">
+          <div className="form-group">
             <label htmlFor="partner" className="form-label">Partner</label>
             <select
               className="form-select"
@@ -316,16 +319,9 @@ function ApplyGenieForm() {
             </select>
           </div>
         </div>
-      </div>
-
-      {/* CPC and Have a SSN Fields */}
-      <div className="row">
         <div className="col-md-6">
-          {/* CPC Field */}
-          <div className="mb-3 form-group">
-            <label htmlFor="cpc" className="form-label">
-              CPC <span className="text-danger">*</span>
-            </label>
+          <div className="form-group">
+            <label htmlFor="cpc" className="form-label">CPC <span className="text-danger">*</span></label>
             <select
               className="form-select"
               id="cpc"
@@ -343,9 +339,12 @@ function ApplyGenieForm() {
             </select>
           </div>
         </div>
+      </div>
+
+      {/* Have a SSN and SSN Fields */}
+      <div className="row mb-3">
         <div className="col-md-6">
-          {/* Have a SSN Field */}
-          <div className="mb-3 form-group">
+          <div className="form-group">
             <label className="form-label">Have a SSN</label>
             <div>
               <div className="form-check form-check-inline">
@@ -375,12 +374,8 @@ function ApplyGenieForm() {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* SSN Field */}
-      <div className="row">
         <div className="col-md-6">
-          <div className="mb-3 form-group">
+          <div className="form-group">
             <label htmlFor="ssn" className="form-label">SSN</label>
             <div className="input-group">
               <span className="input-group-text" id="ssn-icon">
@@ -404,14 +399,17 @@ function ApplyGenieForm() {
                 id="autoGenerateSSN"
                 onClick={autoGenerateSSN}
               >
-                <i className="fas fa-redo"></i> Autogenerate
+                AutoGenerate
               </button>
             </div>
           </div>
         </div>
-        <div className="col-md-6">
-          {/* Condition For Field */}
-          <div className="mb-3 form-group">
+      </div>
+
+      {/* Loan Field */}
+      <div className="row mb-3">
+        <div className="col">
+          <div className="form-group">
             <label className="form-label">Condition For</label>
             <div>
               <div className="form-check">
