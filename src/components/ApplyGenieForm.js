@@ -1,6 +1,19 @@
 // src/components/ApplyGenieForm.js
 import React, { useState, useEffect } from 'react';
-import './ApplyGenieForm.css'; // Custom styles
+import './ApplyGenieForm.css'; // [ApplyGenieForm.css](src/components/ApplyGenieForm.css)
+import PartnerSelect from './PartnerSelect'; // [PartnerSelect.js](src/components/PartnerSelect.js)
+import CPCSelect from './CPCSelect'; // [CPCSelect.js](src/components/CPCSelect.js)
+import EnvironmentSelect from './EnvironmentSelect'; // [EnvironmentSelect.js](src/components/EnvironmentSelect.js)
+import HaveSSNRadio from './HaveSSNRadio'; // [HaveSSNRadio.js](src/components/HaveSSNRadio.js)
+import SSNInput from './SSNInput'; // [SSNInput.js](src/components/SSNInput.js)
+import ConditionForCheckbox from './ConditionForCheckbox'; // [ConditionForCheckbox.js](src/components/ConditionForCheckbox.js)
+import FirstNameInput from './FirstNameInput'; // [FirstNameInput.js](src/components/FirstNameInput.js)
+import LastNameInput from './LastNameInput'; // [LastNameInput.js](src/components/LastNameInput.js)
+import DOBInput from './DOBInput'; // [DOBInput.js](src/components/DOBInput.js)
+import Address1Input from './Address1Input'; // [Address1Input.js](src/components/Address1Input.js)
+import Address2Input from './Address2Input'; // [Address2Input.js](src/components/Address2Input.js)
+import ZipcodeInput from './ZipcodeInput'; // [ZipcodeInput.js](src/components/ZipcodeInput.js)
+import EmailInput from './EmailInput'; // [EmailInput.js](src/components/EmailInput.js)
 
 function ApplyGenieForm() {
   // Form state
@@ -29,53 +42,42 @@ function ApplyGenieForm() {
     Partner3: ['CPC5', 'CPC6'],
   };
 
-  const allCPCs = Object.entries(partnerCPCData).flatMap(
-    ([partner, cpcs]) => cpcs.map((cpc) => `${partner}: ${cpc}`)
-  );
-
+  const [allCPCs, setAllCPCs] = useState([]);
   const [partners, setPartners] = useState([]);
   const [cpcs, setCpcs] = useState([]);
 
   // Fetch partners (simulated API call)
   useEffect(() => {
     const fetchPartners = () => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(partnerCPCData);
-        }, 500);
-      });
+      // TODO: Replace with backend API call
+      // Example:
+      // fetch('https://your-backend-api.com/partners')
+      //   .then(response => response.json())
+      //   .then(data => setPartners(data))
+      setPartners(['Partner1', 'Partner2', 'Partner3']); // Dummy data
     };
 
-    fetchPartners().then((data) => {
-      setPartners(Object.keys(data));
-    });
+    fetchPartners();
   }, []);
 
   // Handle Partner selection to populate CPCs
   useEffect(() => {
     if (formData.partner) {
-      setCpcs(partnerCPCData[formData.partner]);
+      // TODO: Replace with backend API call to fetch CPCs based on selected partner
+      // Example:
+      // fetch(`https://your-backend-api.com/cpcs?partner=${formData.partner}`)
+      //   .then(response => response.json())
+      //   .then(data => setCpcs(data))
+      setCpcs(partnerCPCData[formData.partner] || []); // Dummy data
     } else {
-      setCpcs(allCPCs);
+      setCpcs([]);
     }
     setFormData((prevData) => ({ ...prevData, cpc: '' }));
   }, [formData.partner]);
 
   // Handle input changes
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (name === 'haveSSN') {
-      setFormData((prevData) => ({
-        ...prevData,
-        haveSSN: checked ? value : prevData.haveSSN,
-      }));
-    } else if (name === 'conditionFor') {
-      setFormData((prevData) => ({
-        ...prevData,
-        conditionFor: checked ? value : '',
-      }));
-    } else if (name in formData.personalDetails) {
+  const handleChange = (name, value) => {
+    if (name in formData.personalDetails) {
       setFormData((prevData) => ({
         ...prevData,
         personalDetails: {
@@ -91,128 +93,6 @@ function ApplyGenieForm() {
     }
   };
 
-  // Handle SSN generation
-  const autoGenerateSSN = () => {
-    const randomSSN = Math.floor(1000000 + Math.random() * 9000000).toString();
-    setFormData((prevData) => ({
-      ...prevData,
-      ssn: randomSSN,
-    }));
-  };
-
-  // Handle radio button changes for Have SSN
-  const handleHaveSSNChange = (value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      haveSSN: value,
-    }));
-    if (value === 'No') {
-      autoGenerateSSN();
-    } else {
-      setFormData((prevData) => ({ ...prevData, ssn: '' }));
-    }
-  };
-
-  // Handle Condition For changes
-  const handleConditionForChange = (e) => {
-    const isChecked = e.target.checked;
-    const newCondition = isChecked ? 'Loans' : 'Generic';
-
-    setFormData((prevData) => ({
-      ...prevData,
-      conditionFor: newCondition,
-    }));
-
-    if (isChecked) {
-      autopopulateLoans();
-    } else {
-      autopopulateGeneric();
-    }
-  };
-
-  // Autopopulate functions
-  const autopopulateLoans = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      personalDetails: {
-        ...prevData.personalDetails,
-        firstName: 'bcus',
-        lastName: 'Cltest',
-        dob: '1994-09-09',
-        address1: '',
-        address2: '',
-        zipcode: '',
-        email: '',
-      },
-    }));
-  };
-
-  const autopopulateGeneric = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      personalDetails: {
-        firstName: getRandomFirstName(),
-        lastName: getRandomLastName(),
-        dob: getRandomDOB(),
-        address1: getRandomAddress1(),
-        address2: getRandomAddress2(),
-        zipcode: getRandomZipcode(),
-        email: getRandomEmail(),
-      },
-    }));
-  };
-
-  // Random data generators
-  const getRandomFirstName = () => {
-    const firstNames = ['John', 'Jane', 'Alice', 'Bob', 'Charlie', 'Emily', 'Daniel', 'Sophia'];
-    return firstNames[Math.floor(Math.random() * firstNames.length)];
-  };
-
-  const getRandomLastName = () => {
-    const lastNames = ['Doe', 'Smith', 'Johnson', 'Williams', 'Brown', 'Davis', 'Miller', 'Wilson'];
-    return lastNames[Math.floor(Math.random() * lastNames.length)];
-  };
-
-  const getRandomDOB = () => {
-    const start = new Date(1970, 0, 1);
-    const end = new Date(2000, 11, 31);
-    const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    return dob.toISOString().split('T')[0];
-  };
-
-  const getRandomAddress1 = () => {
-    const addresses = ['123 Main St', '456 Elm St', '789 Oak St', '321 Pine St', '654 Maple St', '987 Cedar Ave'];
-    return addresses[Math.floor(Math.random() * addresses.length)];
-  };
-
-  const getRandomAddress2 = () => {
-    const addresses = ['Apt 1', 'Suite 200', 'Floor 3', 'Unit 4B', '', ''];
-    return addresses[Math.floor(Math.random() * addresses.length)];
-  };
-
-  const getRandomZipcode = () => {
-    return Math.floor(10000 + Math.random() * 90000).toString();
-  };
-
-  const getRandomEmail = () => {
-    const domains = ['example.com', 'mail.com', 'test.org', 'demo.net', 'genie.com'];
-    const firstName = getRandomFirstName().toLowerCase();
-    const lastName = getRandomLastName().toLowerCase();
-    const domain = domains[Math.floor(Math.random() * domains.length)];
-    return `${firstName}.${lastName}@${domain}`;
-  };
-
-  // Handle AutoPopulate button click
-  const handleAutoPopulate = () => {
-    if (formData.conditionFor === 'Loans') {
-      autopopulateLoans();
-    } else if (formData.conditionFor === 'Generic') {
-      autopopulateGeneric();
-    } else {
-      alert('Please select a Condition For option.');
-    }
-  };
-
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -222,12 +102,11 @@ function ApplyGenieForm() {
       alert('CPC is mandatory.');
       return;
     }
-    // No need to check if conditionFor is selected since it defaults to 'Generic'
     if (!formData.haveSSN) {
-      alert('Please select if you have a SSN.');
+      alert('Please select if you have an SSN.');
       return;
     }
-    if (!formData.ssn) {
+    if (formData.haveSSN === 'Yes' && !formData.ssn) {
       alert('SSN is mandatory.');
       return;
     }
@@ -248,7 +127,7 @@ function ApplyGenieForm() {
 
   // Send form data to API
   const sendFormData = (data) => {
-    const apiUrl = 'https://dummyapi.example.com/submit';
+    const apiUrl = 'https://dummyapi.example.com/submit'; // [API Endpoint](https://dummyapi.example.com/submit)
 
     return fetch(apiUrl, {
       method: 'POST',
@@ -264,14 +143,6 @@ function ApplyGenieForm() {
     });
   };
 
-  const handleApplyRegister = () => {
-    // Trigger form submission
-    handleSubmit(new Event('submit'));
-    // After successful submission, implement registration logic
-    // For demonstration, we'll show an alert
-    alert('Registration process initiated.');
-  };
-
   return (
     <form
       id="applyGenieForm"
@@ -279,288 +150,88 @@ function ApplyGenieForm() {
       onSubmit={handleSubmit}
     >
       {/* Environment Field */}
-      <div className="row mb-3">
-        <div className="col">
-          <div className="form-group">
-            <label htmlFor="environment" className="form-label">Environment</label>
-            <select
-              className="form-select"
-              id="environment"
-              name="environment"
-              value={formData.environment}
-              onChange={handleChange}
-            >
-              <option value="Any">Any</option>
-              <option value="QA01">QA01</option>
-              <option value="QA02">QA02</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <EnvironmentSelect
+        value={formData.environment}
+        onChange={(value) => handleChange('environment', value)}
+      />
 
-      {/* Partner and CPC Fields */}
-      <div className="row mb-3">
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="partner" className="form-label">Partner</label>
-            <select
-              className="form-select"
-              id="partner"
-              name="partner"
-              value={formData.partner}
-              onChange={handleChange}
-            >
-              <option value="">-- Select Partner --</option>
-              {partners.map((partner) => (
-                <option key={partner} value={partner}>
-                  {partner}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="cpc" className="form-label">CPC <span className="text-danger">*</span></label>
-            <select
-              className="form-select"
-              id="cpc"
-              name="cpc"
-              value={formData.cpc}
-              onChange={handleChange}
-              required
-            >
-              <option value="">-- Select CPC --</option>
-              {cpcs.map((cpc, index) => (
-                <option key={index} value={cpc}>
-                  {cpc}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
+      {/* Partner Field */}
+      <PartnerSelect
+        value={formData.partner}
+        onChange={(value) => handleChange('partner', value)}
+      />
 
-      {/* Have a SSN and SSN Fields */}
-      <div className="row mb-3">
-        <div className="col-md-6">
-          <div className="form-group">
-            <label className="form-label">Have a SSN</label>
-            <div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  id="haveSSNYes"
-                  name="haveSSN"
-                  value="Yes"
-                  checked={formData.haveSSN === 'Yes'}
-                  onChange={() => handleHaveSSNChange('Yes')}
-                />
-                <label className="form-check-label" htmlFor="haveSSNYes">Yes</label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  id="haveSSNNo"
-                  name="haveSSN"
-                  value="No"
-                  checked={formData.haveSSN === 'No'}
-                  onChange={() => handleHaveSSNChange('No')}
-                />
-                <label className="form-check-label" htmlFor="haveSSNNo">No</label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="ssn" className="form-label">SSN</label>
-            <div className="input-group">
-              <span className="input-group-text" id="ssn-icon">
-                <i className="fas fa-id-card-alt"></i>
-              </span>
-              <input
-                type="number"
-                className="form-control"
-                id="ssn"
-                name="ssn"
-                placeholder="Enter SSN"
-                aria-label="SSN"
-                aria-describedby="ssn-icon"
-                value={formData.ssn}
-                onChange={handleChange}
-                required={formData.haveSSN === 'Yes'}
-              />
-              <button
-                type="button"
-                className="btn btn-outline-secondary"
-                id="autoGenerateSSN"
-                onClick={autoGenerateSSN}
-              >
-                AutoGenerate
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* CPC Field */}
+      <CPCSelect
+        partner={formData.partner}
+        value={formData.cpc}
+        onChange={(value) => handleChange('cpc', value)}
+      />
 
-      {/* Loan Field */}
-      <div className="row mb-3">
-        <div className="col">
-          <div className="form-group">
-            <label className="form-label">Condition For</label>
-            <div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="conditionLoans"
-                  name="conditionFor"
-                  checked={formData.conditionFor === 'Loans'}
-                  onChange={handleConditionForChange}
-                />
-                <label className="form-check-label" htmlFor="conditionLoans">Loans</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Condition For Checkbox */}
+      <ConditionForCheckbox
+        value={formData.conditionFor}
+        onChange={(value) => handleChange('conditionFor', value)}
+      />
 
-      {/* AutoPopulate Button */}
-      <div className="mb-3 form-group">
-        <button
-          type="button"
-          className="btn btn-primary w-100"
-          id="autoPopulateBtn"
-          onClick={handleAutoPopulate}
-        >
-          <i className="fas fa-fill-drip"></i> AutoPopulate
-        </button>
-      </div>
+      {/* Have SSN Radio */}
+      <HaveSSNRadio
+        value={formData.haveSSN}
+        onChange={(value) => handleChange('haveSSN', value)}
+      />
 
-      {/* Personal Details Fields */}
-      <div
-        id="personalDetails"
-        className={`mb-3 form-group ${formData.conditionFor === 'Loans' ? 'faded' : ''}`}
-      >
-        <div className="row">
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="firstName" className="form-label">
-                First Name <span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName"
-                name="firstName"
-                value={formData.personalDetails.firstName}
-                onChange={handleChange}
-                required={formData.conditionFor !== 'Loans'}
-                disabled={formData.conditionFor === 'Loans'}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="lastName" className="form-label">
-                Last Name <span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName"
-                name="lastName"
-                value={formData.personalDetails.lastName}
-                onChange={handleChange}
-                required={formData.conditionFor !== 'Loans'}
-                disabled={formData.conditionFor === 'Loans'}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="dob" className="form-label">DOB</label>
-              <input
-                type="date"
-                className="form-control"
-                id="dob"
-                name="dob"
-                value={formData.personalDetails.dob}
-                onChange={handleChange}
-                disabled={formData.conditionFor === 'Loans'}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="address1" className="form-label">Address1</label>
-              <input
-                type="text"
-                className="form-control"
-                id="address1"
-                name="address1"
-                value={formData.personalDetails.address1}
-                onChange={handleChange}
-                disabled={formData.conditionFor === 'Loans'}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="address2" className="form-label">Address2</label>
-              <input
-                type="text"
-                className="form-control"
-                id="address2"
-                name="address2"
-                value={formData.personalDetails.address2}
-                onChange={handleChange}
-                disabled={formData.conditionFor === 'Loans'}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="zipcode" className="form-label">Zipcode</label>
-              <input
-                type="text"
-                className="form-control"
-                id="zipcode"
-                name="zipcode"
-                value={formData.personalDetails.zipcode}
-                onChange={handleChange}
-                disabled={formData.conditionFor === 'Loans'}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                name="email"
-                value={formData.personalDetails.email}
-                onChange={handleChange}
-                disabled={formData.conditionFor === 'Loans'}
-              />
-            </div>
-          </div>
-        </div>
+      {/* SSN Input */}
+      {formData.haveSSN === 'Yes' && (
+        <SSNInput
+          value={formData.ssn}
+          onChange={(value) => handleChange('ssn', value)}
+        />
+      )}
+
+      {/* Personal Details */}
+      <div id="personalDetails">
+        <FirstNameInput
+          value={formData.personalDetails.firstName}
+          onChange={(value) => handleChange('firstName', value)}
+        />
+
+        <LastNameInput
+          value={formData.personalDetails.lastName}
+          onChange={(value) => handleChange('lastName', value)}
+        />
+
+        <DOBInput
+          value={formData.personalDetails.dob}
+          onChange={(value) => handleChange('dob', value)}
+        />
+
+        <Address1Input
+          value={formData.personalDetails.address1}
+          onChange={(value) => handleChange('address1', value)}
+          disabled={formData.conditionFor === 'Loans'}
+        />
+
+        <Address2Input
+          value={formData.personalDetails.address2}
+          onChange={(value) => handleChange('address2', value)}
+          disabled={formData.conditionFor === 'Loans'}
+        />
+
+        <ZipcodeInput
+          value={formData.personalDetails.zipcode}
+          onChange={(value) => handleChange('zipcode', value)}
+          disabled={formData.conditionFor === 'Loans'}
+        />
+
+        <EmailInput
+          value={formData.personalDetails.email}
+          onChange={(value) => handleChange('email', value)}
+          disabled={formData.conditionFor === 'Loans'}
+        />
       </div>
 
       {/* Submit Buttons */}
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between mt-3">
         <button type="submit" className="btn btn-success me-2" id="applyBtn">
           <i className="fas fa-check-circle"></i> Apply
         </button>
@@ -568,7 +239,7 @@ function ApplyGenieForm() {
           type="button"
           className="btn btn-primary"
           id="applyRegisterBtn"
-          onClick={handleApplyRegister}
+          onClick={() => alert('Registration process initiated.')} // TODO: Implement registration logic
         >
           <i className="fas fa-user-plus"></i> Apply and Register
         </button>
